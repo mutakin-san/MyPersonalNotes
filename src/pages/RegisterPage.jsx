@@ -6,10 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 function RegisterPage() {
 
-
-
     const navigate = useNavigate();
-
 
     async function onRegisterHandler(user) {
         const { error } = await register(user)
@@ -17,9 +14,7 @@ function RegisterPage() {
         if (!error) {
             navigate('/login')
         }
-
     }
-
 
     return (
         <div className="register-page">

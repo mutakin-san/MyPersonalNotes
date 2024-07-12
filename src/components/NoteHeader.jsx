@@ -1,7 +1,6 @@
 import React from "react";
 import NoteSearch from "./NoteSearch";
 import Navigation from "./Navigation";
-import { useSearchParams } from "react-router-dom";
 import PropTypes from "prop-types";
 
 function NoteHeader({ searchQuery, onQueryChange, logout, name }) {

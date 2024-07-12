@@ -1,6 +1,5 @@
 import React from "react";
 
-import { getInitialData } from "../utils/index";
 import { Route, Routes, useSearchParams } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import AddPage from "../pages/AddPage";
@@ -10,13 +9,14 @@ import NotFoundPage from "../pages/NotFoundPage";
 import PropTypes from "prop-types";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
-import { getUserLogged, putAccessToken } from "../utils/network-data";
+import { addNote, archiveNote, deleteNote, getActiveNotes, getArchivedNotes, getNote, getUserLogged, putAccessToken, unarchiveNote } from "../utils/network-data";
 
 class NoteApp extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            notes: getInitialData(),
+            notes: [],
+            archivedNotes: [],
             query: this.props.searchQuery || '',
             authedUser: null,
             initializing: true,
@@ -25,6 +25,7 @@ class NoteApp extends React.Component {
         this.onSearchHandler = this.onSearchHandler.bind(this);
         this.onDeleteHandler = this.onDeleteHandler.bind(this);
         this.onArchiveHandler = this.onArchiveHandler.bind(this);
+        this.onUnarchiveHandler = this.onUnarchiveHandler.bind(this);
         this.onAddNoteHandler = this.onAddNoteHandler.bind(this);
         this.getNote = this.getNote.bind(this);
         this.onLoginSuccess = this.onLoginSuccess.bind(this);
@@ -32,41 +33,50 @@ class NoteApp extends React.Component {
     }
 
 
-    onDeleteHandler(id) {
-        const notes = this.state.notes.filter(note => note.id !== id);
-        this.setState({ notes })
+    async onDeleteHandler(id) {
+        const { error } = await deleteNote(id);
+        if(!error) {
+            const { data: notes } = await getActiveNotes();
+            const { data: archivedNotes } = await getArchivedNotes();
+            this.setState({ notes, archivedNotes })
+        }
     }
 
-    onArchiveHandler(id) {
-        const updatedNotes = this.state.notes.map(note =>
-            note.id === id ? { ...note, archived: !note.archived } : note
-        );
-        this.setState({ notes: updatedNotes })
+    async onArchiveHandler(id) {
+        const { error } = await archiveNote(id);
+        if(!error) {
+            const { data: notes } = await getActiveNotes();
+            const { data: archivedNotes } = await getArchivedNotes();
+            this.setState({ notes, archivedNotes })
+        }
     }
 
-
-    onAddNoteHandler({ title, body }) {
-        const newNote = {
-            id: +new Date(),
-            title: title,
-            body: body,
-            archived: false,
-            createdAt: (new Date()).toISOString(),
-        };
-
-        this.setState((prevState) => {
-            return {
-                notes: [
-                    ...prevState.notes,
-                    newNote,
-                ]
-            }
-        });
+    async onUnarchiveHandler(id) {
+        const { error } = await unarchiveNote(id);
+        if(!error) {
+            const { data: notes } = await getActiveNotes();
+            const { data: archivedNotes } = await getArchivedNotes();
+            this.setState({ notes, archivedNotes })
+        }
     }
 
 
-    getNote(id) {
-        return this.state.notes.find((note) => note.id == id);
+    async onAddNoteHandler(note) {
+        const { error } = await addNote(note);
+        if(!error) {
+            const { data: notes } = await getActiveNotes();
+            this.setState({ notes })
+        }
+    }
+
+
+    async getNote(id) {
+        const { error, data } = await getNote(id);
+        if(!error) {
+            return data;
+        }
+
+        return null;
     }
 
     onSearchHandler(query) {
@@ -86,17 +96,23 @@ class NoteApp extends React.Component {
         putAccessToken('');
     }
 
-
     async componentDidMount() {
-        const { data } = await getUserLogged();
-        this.setState({ authedUser: data, initializing: false });
+        const {error,  data } = await getUserLogged();
+
+        if(!error) {
+            const { data: notes } = await getActiveNotes()
+            const { data: archivedNotes } = await getArchivedNotes();
+            this.setState({notes, archivedNotes, authedUser: data});
+        }
+
+
+        this.setState({ initializing: false });
     }
 
     render() {
-        const filteredNotes = this.state.notes.filter(note => note.title.toLowerCase().includes(this.state.query.toLowerCase()));
-
+        
         if(this.state.initializing) {
-            return null;
+            return <div className="notes-app__loading">Loading...</div>;
         }
 
         if(this.state.authedUser === null) {
@@ -105,14 +121,21 @@ class NoteApp extends React.Component {
                     <Route path="/*" element={<LoginPage onLoginSuccess={this.onLoginSuccess}  />} />
                     <Route path="/register" element={<RegisterPage />} />
                 </Routes>
-            </div>   
-        }
+            </div>
+        }   
+        
+        const filteredNotes = this.state.notes.filter((note) => {
+            return note.title.toLowerCase().includes(this.state.query.toLowerCase()) || note.body.toLowerCase().includes(this.state.query.toLowerCase());
+        });
+        const filteredArchivedNotes = this.state.archivedNotes.filter((note) => {
+            return note.title.toLowerCase().includes(this.state.query.toLowerCase()) || note.body.toLowerCase().includes(this.state.query.toLowerCase());
+        });
 
         return (
             <div className="notes-app">
                 <NoteHeader searchQuery={this.state.query} onQueryChange={this.onSearchHandler} logout={this.onLogoutHandler} name={this.state.authedUser.name} />
                 <Routes>
-                    <Route path="/" element={<HomePage notes={filteredNotes} onDelete={this.onDeleteHandler} onArchived={this.onArchiveHandler} />} />
+                    <Route path="/" element={<HomePage notes={filteredNotes} archivedNotes={filteredArchivedNotes} onDelete={this.onDeleteHandler} onArchived={this.onArchiveHandler} onUnarchived={this.onUnarchiveHandler} />} />
                     <Route path="/notes/:id" element={<DetailPage getNote={this.getNote} onDelete={this.onDeleteHandler} onArchived={this.onArchiveHandler} />} />
                     <Route path="/notes/add" element={<AddPage addNote={this.onAddNoteHandler} />} />
                     <Route path="*" element={<NotFoundPage />} />

@@ -6,8 +6,8 @@ import PropTypes from "prop-types";
 function AddPage({ addNote }) {
     const navigate = useNavigate()
 
-    function onAddNoteHandler(note) {
-        addNote(note);
+    async function onAddNoteHandler(note) {
+        await addNote(note);
         navigate('/');
     }
 

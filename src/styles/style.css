@@ -59,6 +59,18 @@ textarea::placeholder {
   color: white;
 }
 
+.note-app__header .navigation .navigation__logout {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;
+}
+
 
 .note-app__body {
   max-width: 1000px;
@@ -204,6 +216,74 @@ textarea::placeholder {
   min-height: 90vh;
   justify-content: center;
   align-items: center;
+}
+
+.register-input, .login-input {
+  margin: 0 auto;
+  padding: 24px 16px;
+  max-width: 60vw;
+}
+
+.register-input__name,
+.register-input__email,
+.register-input__password,
+.login-input__email,
+.login-input__password {
+  width: 100%;
+  padding: 12px;
+  margin: 12px 0;
+  font-family: 'Inter', sans-serif;
+  background-color: transparent;
+  color: white;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+.register-input__name::placeholder,
+.register-input__email::placeholder,
+.register-input__password::placeholder,
+.login-input__email::placeholder,
+.login-input__password::placeholder {
+  color: #aaa;
+  font-weight: bold;
+}
+
+.register-input__name:focus,
+.register-input__email:focus,
+.register-input__password:focus,
+.login-input__email:focus,
+.login-input__password:focus {
+  outline: none;
+}
+
+.register-input__button, .login-input__button {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  background-color: white;
+  color: #1a1a1a;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+
+.register-page, .login-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 90vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-page__login, .login-page__register {
+  text-align: center;
+}
+
+.register-page__login a, .login-page__register a {
+  text-decoration: none;
+  color: #fff263;
 }
 
 @media only screen and (min-width: 500px) {

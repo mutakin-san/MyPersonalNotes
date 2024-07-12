@@ -8,6 +8,9 @@ import DetailPage from "../pages/DetailPage";
 import NoteHeader from "./NoteHeader";
 import NotFoundPage from "../pages/NotFoundPage";
 import PropTypes from "prop-types";
+import LoginPage from "../pages/LoginPage";
+import RegisterPage from "../pages/RegisterPage";
+import { getUserLogged, putAccessToken } from "../utils/network-data";
 
 class NoteApp extends React.Component {
     constructor(props) {
@@ -15,14 +18,17 @@ class NoteApp extends React.Component {
         this.state = {
             notes: getInitialData(),
             query: this.props.searchQuery || '',
+            authedUser: null,
+            initializing: true,
         }
 
         this.onSearchHandler = this.onSearchHandler.bind(this);
-
         this.onDeleteHandler = this.onDeleteHandler.bind(this);
         this.onArchiveHandler = this.onArchiveHandler.bind(this);
         this.onAddNoteHandler = this.onAddNoteHandler.bind(this);
         this.getNote = this.getNote.bind(this);
+        this.onLoginSuccess = this.onLoginSuccess.bind(this);
+        this.onLogoutHandler = this.onLogoutHandler.bind(this);
     }
 
 
@@ -68,27 +74,56 @@ class NoteApp extends React.Component {
         this.props.onSearch(query)
     }
 
+    async onLoginSuccess({accessToken}) {
+        putAccessToken(accessToken);
+        const { data } = await getUserLogged();
 
+        this.setState({ authedUser: data });
+    }
+
+    async onLogoutHandler() {
+        this.setState({ authedUser: null });
+        putAccessToken('');
+    }
+
+
+    async componentDidMount() {
+        const { data } = await getUserLogged();
+        this.setState({ authedUser: data, initializing: false });
+    }
 
     render() {
         const filteredNotes = this.state.notes.filter(note => note.title.toLowerCase().includes(this.state.query.toLowerCase()));
 
+        if(this.state.initializing) {
+            return null;
+        }
+
+        if(this.state.authedUser === null) {
+            return <div className="notes-app">
+                <Routes>
+                    <Route path="/*" element={<LoginPage onLoginSuccess={this.onLoginSuccess}  />} />
+                    <Route path="/register" element={<RegisterPage />} />
+                </Routes>
+            </div>   
+        }
+
         return (
-            <>
-                <NoteHeader searchQuery={this.state.query} onQueryChange={this.onSearchHandler} />
+            <div className="notes-app">
+                <NoteHeader searchQuery={this.state.query} onQueryChange={this.onSearchHandler} logout={this.onLogoutHandler} name={this.state.authedUser.name} />
                 <Routes>
                     <Route path="/" element={<HomePage notes={filteredNotes} onDelete={this.onDeleteHandler} onArchived={this.onArchiveHandler} />} />
                     <Route path="/notes/:id" element={<DetailPage getNote={this.getNote} onDelete={this.onDeleteHandler} onArchived={this.onArchiveHandler} />} />
                     <Route path="/notes/add" element={<AddPage addNote={this.onAddNoteHandler} />} />
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
-            </>
+            </div>
         );
     }
 }
 
 NoteApp.propTypes = {
-    searchQuery: PropTypes.string.isRequired,
+    searchQuery: PropTypes.string,
     onSearch: PropTypes.func.isRequired,
 }
 

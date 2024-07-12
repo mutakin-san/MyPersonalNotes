@@ -4,12 +4,12 @@ import Navigation from "./Navigation";
 import { useSearchParams } from "react-router-dom";
 import PropTypes from "prop-types";
 
-function NoteHeader({ searchQuery, onQueryChange }) {
+function NoteHeader({ searchQuery, onQueryChange, logout, name }) {
 
     return (
         <div className="note-app__header">
             <h1>Notes</h1>
-            <Navigation />
+            <Navigation logout={logout} name={name} />
             <NoteSearch query={searchQuery} onSearchHandler={onQueryChange} />
         </div>
     )
@@ -19,6 +19,8 @@ function NoteHeader({ searchQuery, onQueryChange }) {
 NoteHeader.propTypes = {
     searchQuery: PropTypes.string.isRequired,
     onQueryChange: PropTypes.func.isRequired,
+    logout: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired
 }
 
 export default NoteHeader;

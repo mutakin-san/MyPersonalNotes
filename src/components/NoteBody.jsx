@@ -1,14 +1,17 @@
 import React from "react";
 import NoteList from "./NoteList";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 function NoteBody({ notes, archivedNotes, onDelete, onArchived, onUnarchived }) {
+    const { t } = useTranslation();
+
     return (
         <div className="note-app__body">
-            <h2>Catatan Aktif</h2>
-            {!notes.length ? <p className="notes-list__empty-message">Tidak ada catatan</p> : <NoteList notes={notes} onDelete={onDelete} onArchived={onArchived} onUnarchived={onUnarchived} />}
-            <h2>Arsip</h2>
-            {!archivedNotes.length ? <p className="notes-list__empty-message">Tidak ada Arsip</p> : <NoteList notes={archivedNotes} onDelete={onDelete} onArchived={onArchived} onUnarchived={onUnarchived} />}
+            <h2>{t('activeNotes')}</h2>
+            {!notes.length ? <p className="notes-list__empty-message">{t('noActiveNotes')}</p> : <NoteList notes={notes} onDelete={onDelete} onArchived={onArchived} onUnarchived={onUnarchived} />}
+            <h2>{t('archivedNotes')}</h2>
+            {!archivedNotes.length ? <p className="notes-list__empty-message">{t('noArchivedNotes')}</p> : <NoteList notes={archivedNotes} onDelete={onDelete} onArchived={onArchived} onUnarchived={onUnarchived} />}
         </div>
     );
 }

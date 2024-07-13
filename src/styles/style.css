@@ -1,3 +1,14 @@
+:root {
+  --font-color: #333;
+  --background-color: #eee;
+}
+
+
+[data-theme="dark"] {
+  --font-color: #eee;
+  --background-color: #333;
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -6,8 +17,8 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background-color: #202124;
-  color: white;
+  background-color: var(--background-color);
+  color: var(--font-color);
 }
 
 input,
@@ -16,7 +27,7 @@ textarea {
   margin: 12px 0;
   font-family: 'Inter', sans-serif;
   background-color: transparent;
-  color: white;
+  color: var(--font-color);;
   border: 1px solid #aaa;
   border-radius: 4px;
 }
@@ -55,17 +66,32 @@ textarea::placeholder {
   padding: 8px;
 }
 
-.note-app__header .navigation ul li a {
+.note-app__header .navigation ul li a, .note-app__header .navigation ul li button  {
   display: flex;
   align-items: center;
-  color: white;
+  color: var(--font-color);;
   font-size: 2em;
+}
+
+.toggle-theme__button, .toggle-locale__button {
+  background-color: transparent;
+  border: 2px solid var(--font-color);
+  padding: 4px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  font-size: 1.3em!important;
+  align-items: center;
+}
+
+.toggle-locale__button {
+  border-radius: 4px;
 }
 
 .note-app__header h1 {
   margin: 8px 0;
   flex: 1;
-  color: white;
+  color: var(--font-color);;
 }
 
 .note-app__header .navigation .navigation__logout {
@@ -74,10 +100,11 @@ textarea::placeholder {
   gap: 4px;
   background-color: transparent;
   border: none;
-  color: white;
+  color: var(--font-color);;
   font-weight: bold;
   cursor: pointer;
   padding: 0;
+  font-size: 1.2em;
 }
 
 
@@ -122,9 +149,9 @@ textarea::placeholder {
   display: block;
   width: 100%;
   padding: 8px;
-  background-color: transparent;
+  background-color: var(--font-color);
   font-family: 'Inter', sans-serif;
-  color: white;
+  color: var(--background-color);;
   border: 1px solid #aaa;
   border-radius: 4px;
   font-weight: bold;
@@ -167,7 +194,7 @@ textarea::placeholder {
 
 .note-item__title a {
   text-decoration: none;
-  color: white;
+  color: var(--font-color);;
 }
 
 .note-item__date {
@@ -205,11 +232,11 @@ textarea::placeholder {
 }
 
 .note-item__archive-button {
-  color: #fff263;
+  color: #0400ff;
 }
 
 .note-item__archive-button:hover {
-  color: #c49000;
+  color: #0401c7;
 }
 
 .note-item__delete-button:hover {
@@ -245,7 +272,7 @@ textarea::placeholder {
   margin: 12px 0;
   font-family: 'Inter', sans-serif;
   background-color: transparent;
-  color: white;
+  color: var(--font-color);
   border: 1px solid #aaa;
   border-radius: 4px;
 }
@@ -271,8 +298,8 @@ textarea::placeholder {
   display: block;
   width: 100%;
   padding: 8px;
-  background-color: white;
-  color: #1a1a1a;
+  background-color: var(--font-color);
+  color: var(--background-color);
   border: 1px solid #aaa;
   border-radius: 4px;
   font-weight: bold;
@@ -294,7 +321,7 @@ textarea::placeholder {
 
 .register-page__login a, .login-page__register a {
   text-decoration: none;
-  color: #fff263;
+  color: var(--font-color);
 }
 
 

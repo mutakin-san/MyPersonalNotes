@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { PropTypes } from "prop-types";
+import { useTranslation } from "react-i18next";
+import { useInput } from "../utils/customHooks";
 
 function RegisterInput({ register }) {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [name, setName] = useInput('');
+    const [email, setEmail] = useInput('');
+    const [password, setPassword] = useInput('');
     const [isLoading, setIsLoading] = useState(false);
+    const { t } = useTranslation();
 
     async function onSubmitEventHandler(event) {
         event.preventDefault();
@@ -19,12 +22,12 @@ function RegisterInput({ register }) {
     
     return (
         <div className='register-input'>
-            <h2>Register</h2>
+            <h2>{t('register')}</h2>
             <form onSubmit={onSubmitEventHandler}>
-                <input required className='register-input__name' type="text" placeholder="Masukkan nama..." value={name} onChange={(event) => setName(event.target.value)} />
-                <input required className='register-input__email' type="email" placeholder="Masukkan email..." value={email} onChange={(event) => setEmail(event.target.value)} />
-                <input required className='register-input__password' type="password" placeholder="Masukkan password..." value={password} onChange={(event) => setPassword(event.target.value)} />
-                <button type="submit" disabled={isLoading} className="register-input__button">{isLoading ? 'Loading...' : 'Register'}</button>
+                <input required className='register-input__name' type="text" placeholder={t('namePlaceholder')} value={name} onChange={(event) => setName(event.target.value)} />
+                <input required className='register-input__email' type="email" placeholder={t('emailPlaceholder')} value={email} onChange={(event) => setEmail(event.target.value)} />
+                <input required className='register-input__password' type="password" placeholder={t('passwordPlaceholder')} value={password} onChange={(event) => setPassword(event.target.value)} />
+                <button type="submit" disabled={isLoading} className="register-input__button">{isLoading ? 'Loading...' : t('register')}</button>
             </form>
         </div>
     )

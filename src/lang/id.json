@@ -1,0 +1,19 @@
+{
+    "translation": {
+        "appName": "Catatan Personal Ku",
+        "activeNotes": "Catatan Aktif",
+        "archivedNotes": "Catatan Terarsip",
+        "noActiveNotes": "Tidak ada catatan aktif",
+        "noArchivedNotes": "Tidak ada catatan terarsip",
+        "searchPlaceholder": "Cari catatan...",
+        "charLimit": "Sisa karakter",
+        "titlePlaceholder": "Isi judul...",
+        "bodyPlaceholder": "Isi catatan...",
+        "createNote": "Buat Catatan",
+        "register": "Daftar",
+        "login": "Masuk",
+        "namePlaceholder": "Isi nama...",
+        "emailPlaceholder": "Isi email...",
+        "passwordPlaceholder": "Isi kata sandi..."
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "translation": {
+        "appName": "My Personal Notes",
+        "activeNotes": "Active Notes",
+        "archivedNotes": "Archived Notes",
+        "noActiveNotes": "No active notes",
+        "noArchivedNotes": "No archived notes",
+        "searchPlaceholder": "Search notes...",
+        "charLimit": "Characters left",
+        "titlePlaceholder": "Fill the title...",
+        "bodyPlaceholder": "Fill the body...",
+        "createNote": "Create Note",
+        "register": "Register",
+        "login": "Login",
+        "namePlaceholder": "Fill your name...",
+        "emailPlaceholder": "Fill your email...",
+        "passwordPlaceholder": "Fill your password..."
+    }
+}

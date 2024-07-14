@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import NoteItem from "../components/NoteItem";
 import { useNavigate, useParams } from "react-router-dom";
 
-function DetailPage({ getNote, onDelete, onArchived }) {
+function DetailPage({ getNote, onDelete, onArchived, onUnarchived }) {
     const { id } = useParams();
     const navigate = useNavigate();
     const [note, setNote] = useState({})
@@ -26,7 +26,7 @@ function DetailPage({ getNote, onDelete, onArchived }) {
 
     return (
         <div className="detail-page">
-            {isLoading ? <p>Loading...</p> : <NoteItem key={note.id} {...note} onDelete={onDeleteHandler} onArchived={onArchived} />}
+            {isLoading ? <p>Loading...</p> : <NoteItem key={note.id} {...note} onDelete={onDeleteHandler} onArchived={onArchived} onUnarchived={onUnarchived} />}
         </div>
     );
 }
@@ -35,6 +35,7 @@ DetailPage.propTypes = {
     getNote: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     onArchived: PropTypes.func.isRequired,
+    onUnarchived: PropTypes.func.isRequired,
 }
 
 export default DetailPage;

@@ -140,7 +140,7 @@ class NoteApp extends React.Component {
                 <NoteHeader searchQuery={this.state.query} onQueryChange={this.onSearchHandler} logout={this.onLogoutHandler} name={this.state.authedUser.name} />
                 <Routes>
                     <Route path="/" element={<HomePage notes={filteredNotes} archivedNotes={filteredArchivedNotes} onDelete={this.onDeleteHandler} onArchived={this.onArchiveHandler} onUnarchived={this.onUnarchiveHandler} />} />
-                    <Route path="/notes/:id" element={<DetailPage getNote={this.getNote} onDelete={this.onDeleteHandler} onArchived={this.onArchiveHandler} />} />
+                    <Route path="/notes/:id" element={<DetailPage getNote={this.getNote} onDelete={this.onDeleteHandler} onArchived={this.onArchiveHandler} onUnarchived={this.onUnarchiveHandler} />} />
                     <Route path="/notes/add" element={<AddPage addNote={this.onAddNoteHandler} />} />
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
